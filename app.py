@@ -120,9 +120,9 @@ def index():
     # src = make_dataset(grouplabels, lstlabels[1:], current_feature_select, rw_colors)
     # p = make_plot(src, current_feature_select)
     # script, div = components(p)
-    script, div = None
+    # script, div = None
     #Render the page
-    return render_template('/templates/index.html')
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
