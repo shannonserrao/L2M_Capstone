@@ -122,7 +122,7 @@ def index():
     # script, div = components(p)
     script, div = None
     #Render the page
-    return render_template('index.html', script=script, div=div, feature_names=featlist, current_feature_name=current_feature_select)
+    return render_template('/templates/index.html', script=script, div=div, feature_names=featlist, current_feature_name=current_feature_select)
 
 
 if __name__ == '__main__':
