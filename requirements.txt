@@ -4,7 +4,6 @@ bokeh==1.4.0
 gunicorn
 folium
 h3
-json
 numpy
 math
 branca.colormap
