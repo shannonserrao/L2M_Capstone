@@ -5,6 +5,5 @@ gunicorn
 folium
 h3
 numpy
-math
 branca.colormap
 geojson.feature
