@@ -30,7 +30,7 @@ demo_menu_list=['median_employee_salary',
 
 def create_map(table, zips, mapped_feature, add_text = ''):
     # reading of the updated GeoJSON file
-    nyc_geo = r'/home/shannon/Documents/TDI/LeaseToMe/GeoJSON/nyc_updated-file.json'
+    nyc_geo = r'data/nyc_updated-file.json'
     # initiating a Folium map with NYC's longitude and latitude 40.7128° N, 74.0060° W
     f = folium.Figure(width=1000, height=1000)
     m = folium.Map(location = [40.7128, -74.0060], zoom_start = 10, width=500, height=500).add_to(f)
