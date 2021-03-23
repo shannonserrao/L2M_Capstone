@@ -10,6 +10,25 @@
 <script src="//cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.js"></script>
 <script src="//cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.js"></script>
 
+<style>
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    li {
+      float: left;
+    }
+    
+    li a {
+      display: block;
+      padding: 8px;
+      background-color: #dddddd;
+    }
+    </style>
+    
 
 </head>
 <body>
@@ -17,21 +36,23 @@
 <h2> Lease to Me is a web portal that provides business owners retail solutions.
     Finding the right location and conditions for your new business is a daunting task. Finding 
     retail spaces is much more challenging that renting a home. </h2>
-<form action="/">
-<!-- <select name="feature_name">
-    {% for feature in feature_names %}
-        {% if feature == current_feature_name %}
-            <option selected value="{{ feature }}">{{ feature }}</option> 
-        {% else %} 
-            <option value="{{ feature }}">{{ feature }}</option> 
-        {% endif %}
-    {% endfor %}
-</select> -->
-<input type="submit">
+<h3> Lets say, you want to open a business in New York. This app allows you to look up things like retail prices,
+    demographics of the neighborhood and other businesses in your area that would make your business profitable. </h3>
+
+<h3>Click to see the demographics information</h3>    
+<form action="demographics" method="GET">
+    <input type="Submit" title="Click Here" value="Demographics">
+</form>
+<form action="property_info" method="GET">
+    <input type="Submit" title="Click Here" value="Property_info">
+</form>
+<form action="places_of_interest" method="GET">
+    <input type="Submit" title="Click Here" value="places_of_interest">
 </form>
 
-<!-- {{ script|safe }}
-{{ div|safe }} -->
+<form action="about" method="GET">
+    <input type="Submit" title="Click Here" value="about">
+</form>
 
 
 </body>

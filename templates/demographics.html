@@ -1,0 +1,37 @@
+<html>
+<head>
+<link
+    href="//cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.css"
+    rel="stylesheet" type="text/css">
+<link
+    href="//cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.css"
+    rel="stylesheet" type="text/css">
+
+<script src="//cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.js"></script>
+<script src="//cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.js"></script>
+
+
+</head>
+<body>
+<H1> Demographics Visualization in New York</H1>
+
+<h3>Select the demographic feature </h3>
+<form action="demographics">    
+<select name="demo_name">
+    {% for demo_feature in demo_attributes %}
+        {% if demo_feature == demo_name %}
+            <option selected value="{{ demo_feature }}">{{ demo_feature }}</option> 
+        {% else %} 
+            <option value="{{ demo_feature }}">{{ demo_feature }}</option> 
+        {% endif %}
+    {% endfor %}
+</select>
+<input type="submit">
+</form>
+
+{{ script|safe }}
+{{ div|safe }}
+
+
+</body>
+</html>

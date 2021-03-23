@@ -1,0 +1,50 @@
+<html>
+<head>
+<link
+    href="//cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.css"
+    rel="stylesheet" type="text/css">
+<link
+    href="//cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.css"
+    rel="stylesheet" type="text/css">
+
+<script src="//cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.js"></script>
+<script src="//cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.js"></script>
+
+
+</head>
+<body>
+<H1> Places of interest in New York</H1>
+
+<h3>Click to see the places of interest</h3>    
+<form action="places_of_interest">
+<label for="poi_type_name">Enter the type of place you want you are looking for: <br /> </label>    
+<select name="poi_type_name">
+        {% for poi_feature in place_type_list %}
+            {% if poi_feature == poi_type_name %}
+                <option selected value="{{ poi_feature }}">{{ poi_feature }}</option> 
+            {% else %} 
+                <option value="{{ poi_feature }}">{{ poi_feature }}</option> 
+            {% endif %}
+        {% endfor %}
+</select><br />
+
+<label for="poi_rad">Enter the radius of search: <br /> </label>    
+<input name="poi_rad" type=number  min= 0.0 placeholder =0.5 step=0.1 value=0.5 /> in km<br /><br />
+
+<label for="center_lat">Enter the latitude of the location: <br /> </label>    
+<input name="center_lat" type=number  placeholder =40.753912 step=0.0000001 value=40.753912 /> Enter the latitude <br /><br />
+
+<label for="center_long">Enter the longitude of the location: <br /> </label>    
+<input name="center_long" type=number  placeholder =-73.981205 step=0.0000001 value=-73.981205 /> Enter the longitude <br /><br />
+
+<input type="submit">
+</form>
+    
+
+
+{{ script|safe }}
+{{ div|safe }}
+
+
+</body>
+</html>
