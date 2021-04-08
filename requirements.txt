@@ -7,4 +7,5 @@ h3
 numpy
 branca
 geojson
+scipy
 scikit-learn==0.19.1
