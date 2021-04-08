@@ -289,7 +289,7 @@ def recomm_eng():
     poi_wt  = 1
     df['suitability_score']=( feat_wt * df['scaled_feat_dist']  + poi_wt * df['scaled_net_mean_rad'])/(feat_wt + poi_wt) 
     df['suitability_score']=df['suitability_score'].round(3)
-    
+
     # Drop the unncessary columns for score computation
     drop_list=['feat_dist','plus_mean_rad','minus_mean_rad','scaled_feat_dist','scaled_plus_mean_rad','scaled_minus_mean_rad','scaled_net_mean_rad']
     df.drop(columns=drop_list,inplace=True)
