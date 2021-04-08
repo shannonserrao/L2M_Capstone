@@ -17,11 +17,14 @@ from bokeh.embed import components
 from src.demo_viz import create_map
 from src.tax_asr_viz import create_hex_map
 from src.poi_viz import select_df_and_map
+from src.rec_eng import DictEncoder
 
 #scikit learn libraries
 from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import base
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.pipeline import Pipeline
 
 
 demo_menu_list=['median_employee_salary',
@@ -52,23 +55,6 @@ poi_list=['RETAIL', 'RESTAURANT', 'FITNESS', 'BEAUTY', 'BANK', 'PHARMACY', 'MEDI
 
 app = Flask(__name__)
 
-class DictEncoder(base.BaseEstimator, base.TransformerMixin):
-    
-    def __init__(self, col):
-        self.col = col
-    
-    def fit(self, X, y=None):
-        return self
-    
-    def transform(self, X):
-        
-        def to_dict(l):
-            try:
-                return {x: 1 for x in l}
-            except TypeError:
-                return {}
-        
-        return X[self.col].apply(to_dict)
 
 @app.route('/')
 def index():
@@ -233,8 +219,15 @@ def recomm_eng():
     
     # Read processed data frame and features files
     df_prop_ny_poi=pd.read_csv('data/properties_geolocation_ny_mean_radius.csv')
-    feat_pipe = pickle.load( open("data/feat_pipe.p", "rb" ) )
-    features = pickle.load( open("data/features.p", "rb" ) )
+    # feat_pipe = pickle.load( open("data/feat_pipe.p", "rb" ) )
+    # features = pickle.load( open("data/features.p", "rb" ) )
+
+    
+    feat_pipe = Pipeline([('encoder', DictEncoder('features_fmt')),
+                     ('vectorizer', DictVectorizer())])
+    features = feat_pipe.fit_transform(df_prop_ny_poi)
+
+
 
     # User form to data frame for prediction
     key_feature_list=[keyfeature1,keyfeature2,keyfeature3,keyfeature4,keyfeature5]
