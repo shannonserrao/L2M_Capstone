@@ -1,8 +1,10 @@
 #Load the packages
 import pandas as pd
 import numpy as np
+import pickle
 from flask import Flask, render_template, request
 import folium
+
 
 import requests
 #Bokeh imports
@@ -15,6 +17,12 @@ from bokeh.embed import components
 from src.demo_viz import create_map
 from src.tax_asr_viz import create_hex_map
 from src.poi_viz import select_df_and_map
+
+#scikit learn libraries
+from sklearn.neighbors import NearestNeighbors
+from sklearn.preprocessing import MinMaxScaler
+from sklearn import base
+
 
 demo_menu_list=['median_employee_salary',
         'population_density',
@@ -44,7 +52,23 @@ poi_list=['RETAIL', 'RESTAURANT', 'FITNESS', 'BEAUTY', 'BANK', 'PHARMACY', 'MEDI
 
 app = Flask(__name__)
 
-
+class DictEncoder(base.BaseEstimator, base.TransformerMixin):
+    
+    def __init__(self, col):
+        self.col = col
+    
+    def fit(self, X, y=None):
+        return self
+    
+    def transform(self, X):
+        
+        def to_dict(l):
+            try:
+                return {x: 1 for x in l}
+            except TypeError:
+                return {}
+        
+        return X[self.col].apply(to_dict)
 
 @app.route('/')
 def index():
@@ -139,6 +163,157 @@ def places_of_interest():
 
     return render_template('poi.html', script=poi_script, div=poi_div, poi_type_name=place_type_name, poi_rad =place_radius, center_lat = center_latitude, center_long=center_longitude, place_type_list=poi_list)
 
+#####  USER Survey form 
+@app.route('/user_form', methods =['GET'])
+def user_form():
+
+    if request.method == 'POST':
+        rental_space_type = request.form['rental_space_type']
+        rental_space_min  = request.form['rental_space_min']
+        rental_space_max  = request.form['rental_space_max']
+
+        keyfeature1  = request.form['keyfeature1']
+        keyfeature2  = request.form['keyfeature2']
+        keyfeature3  = request.form['keyfeature3']
+        keyfeature4  = request.form['keyfeature4']
+        keyfeature5  = request.form['keyfeature5']
+
+        if rental_space_type == None:
+            rental_space_type = 'RETAIL'
+        if rental_space_min == None:
+            rental_space_min = 100
+        if rental_space_max == None:
+            rental_space_max = 100000
+    # if request.args.get("rental_space_type") == None:
+    #     rental_space_type = 'RETAIL'
+    # else:        
+    #     rental_space_type = request.args.get("rental_space_type").strip()
+
+    
+    # if request.args.get("rental_space_min") == None:
+    #     rental_space_min = 100
+    # else:        
+    #     rental_space_min = int(request.args.get("rental_space_min").strip())
+    
+    # if request.args.get("rental_space_max") == None:
+    #     rental_space_max = 10000
+    # else:        
+    #     rental_space_max = int(request.args.get("rental_space_max").strip())
+
+    # keyfeature1 = request.args.get("keyfeature1")
+    # keyfeature2 = request.args.get("keyfeature2")
+    # keyfeature3 = request.args.get("keyfeature3")
+    # keyfeature4 = request.args.get("keyfeature4")
+    # keyfeature5 = request.args.get("keyfeature5")
+
+    return render_template('user_form.html')
+
+@app.route('/recomm_eng', methods =['GET', 'POST'])
+def recomm_eng():
+
+    
+    if request.method == "POST":
+        
+        rental_space_type = request.form['place_type']
+        rental_space_min  = float(request.form['rental_space_min'])
+        rental_space_max  = float(request.form['rental_space_max'])
+
+        keyfeature1  = request.form['keyfeature1']
+        keyfeature2  = request.form['keyfeature2']
+        keyfeature3  = request.form['keyfeature3']
+        keyfeature4  = request.form['keyfeature4']
+        keyfeature5  = request.form['keyfeature5']
+
+    if rental_space_type == None:
+        rental_space_type = 'RETAIL'
+    if rental_space_min == None:
+        rental_space_min = 100
+    if rental_space_max == None:
+        rental_space_max = 100000
+    
+    # Read processed data frame and features files
+    df_prop_ny_poi=pd.read_csv('data/properties_geolocation_ny_mean_radius.csv')
+    feat_pipe = pickle.load( open("data/feat_pipe.p", "rb" ) )
+    features = pickle.load( open("data/features.p", "rb" ) )
+
+    # User form to data frame for prediction
+    key_feature_list=[keyfeature1,keyfeature2,keyfeature3,keyfeature4,keyfeature5]
+    temp_feat_list=[]
+    for item in key_feature_list:
+        if item not in temp_feat_list:
+            if item: 
+                temp_feat_list.append(item)
+    key_feature_list=temp_feat_list
+    # Make unique list of required features
+    user_entry_list=[]
+    for item in list(df_prop_ny_poi.columns):
+        if item == 'features_fmt':
+            user_entry_list.append(key_feature_list)
+        else:
+            user_entry_list.append(None)
+    df_user_entry=pd.DataFrame([user_entry_list],columns=list(df_prop_ny_poi.columns))
+
+    user_entry_features = feat_pipe.transform(df_user_entry)
+
+
+    # Nearest Neighbors for the required features in data frame df
+    nn = NearestNeighbors(n_neighbors=20).fit(features)
+    dists, indices = nn.kneighbors(user_entry_features)
+    df=df_prop_ny_poi.iloc[indices[0]]
+    df['feat_dist'] = dists[0]
+
+    ## Slack for the constraints on the max leasing space . Default is 5 %.
+    space_slack=0.05
+    min_space=rental_space_min - space_slack * rental_space_min 
+    max_space=rental_space_max + space_slack * rental_space_max 
+
+    # Drop the unneccessary columns and filter out the spaces which are outside of the square footage criteria
+    mask=(df.leasable_square_foot >= min_space) & (df.leasable_square_foot <= max_space) 
+    col_select=['address_id','leasable_square_foot','description','features_fmt','slug', 'feat_dist'] + [rental_space_type+'_plus_mean_rad', rental_space_type+'_minus_mean_rad']
+    df=df[mask][col_select]
+    df.rename(columns={rental_space_type+'_plus_mean_rad' :'plus_mean_rad', rental_space_type+'_minus_mean_rad' :'minus_mean_rad'}, inplace=True)
+
+    # Replace nan values with more than the max values
+    df['plus_mean_rad'].fillna(df['plus_mean_rad'].max()+2, inplace=True)
+    df['minus_mean_rad'].fillna(df['minus_mean_rad'].max()+2, inplace=True)
+
+    # scale the feature distances and the mean radius for poi data
+    scaler = MinMaxScaler(feature_range=(0,1))
+    df['scaled_feat_dist'] = scaler.fit_transform(df['feat_dist'].to_frame())
+    df['scaled_plus_mean_rad'] = scaler.fit_transform(df['plus_mean_rad'].to_frame())
+    df['scaled_minus_mean_rad'] = scaler.fit_transform(df['minus_mean_rad'].to_frame())
+    df['scaled_net_mean_rad'] = scaler.fit_transform((df['scaled_plus_mean_rad'] - df['scaled_minus_mean_rad']).to_frame())
+
+    # Weigh the feature data score and the poi score
+    feat_wt = 1 
+    poi_wt  = 1
+    df['suitability_score']=( feat_wt * df['scaled_feat_dist']  + poi_wt * df['scaled_net_mean_rad'])/(feat_wt + poi_wt) 
+    df['suitability_score']=df['suitability_score'].round(3)
+    
+    # Drop the unncessary columns for score computation
+    drop_list=['feat_dist','plus_mean_rad','minus_mean_rad','scaled_feat_dist','scaled_plus_mean_rad','scaled_minus_mean_rad','scaled_net_mean_rad']
+    df.drop(columns=drop_list,inplace=True)
+
+    # Rank the properties as per suitability score
+    df.sort_values(by=['suitability_score'], ascending=False, inplace=True)
+
+    # Convert data frame to tuple format
+    records = df.to_records(index=False)
+    data = list(records)
+    # data=[(1,2,3), (1,2,3), (3,5,44)]
+
+    # Columns displayed are below
+    # print_col_list=
+    # ['address_id',
+    # 'leasable_square_foot',
+    # 'description',
+    # 'features_fmt',
+    # 'slug',
+    # 'suitability_score']
+
+    return render_template('recommendation.html', data = data)
+
+#####
 @app.route('/about')
 def about():
     return render_template('about.html')

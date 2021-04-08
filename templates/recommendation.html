@@ -27,8 +27,18 @@
       padding: 8px;
       background-color: #dddddd;
     }
-    </style>
+
     
+    </style>
+    <style>
+ 
+        td {
+               width: 150px;
+               text-align: center;
+               border: 1px solid black;
+               padding: 5px;
+             }
+       </style>
 
 </head>
 <body>
@@ -40,23 +50,31 @@
     demographics of the neighborhood and other businesses in your area that would make your business profitable. </h3>
 
 <h3>Click to see the demographics information</h3>    
-<form action="demographics" method="GET">
-    <input type="Submit" title="Click Here" value="Demographics">
-</form>
-<form action="property_info" method="GET">
-    <input type="Submit" title="Click Here" value="Property_info">
-</form>
-<form action="places_of_interest" method="GET">
-    <input type="Submit" title="Click Here" value="places_of_interest">
-</form>
-<form action="user_form" method="GET">
-    <input type="Submit" title="Click Here" value="user_form">
-</form>
 
-<form action="about" method="GET">
-    <input type="Submit" title="Click Here" value="about">
-</form>
-
+<table>
+    <thead>
+      <tr>
+          <th>Address ID</th>
+          <th>Leasable square foot</th>
+          <th>Property description</th>
+          <th>Features captured</th>
+          <th>Address</th>
+          <th>Suitability Score</th>
+      </tr>
+      </thead>    
+      <tbody>
+       {% for row in data %}    
+              <tr>
+                  <td>{{row[0]}}</td>
+                  <td>{{row[1]}}</td>
+                  <td>{{row[2]}}</td>
+                  <td>{{row[3]}}</td>
+                  <td>{{row[4]}}</td>
+                  <td>{{row[5]}}</td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
 
 </body>
 </html>

@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+  <head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous"></head>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<!-- 
+    <title>Hello, world!</title> -->
+  </head>
+  
+  <style>
+ body{ 
+    color: rgb(12, 12, 12); 
+    font-size:18px; 
+    background-color: #e5f0fc; 
+    font-family:sans-serif;
+    margin: 25px 25px 25px 25px;
+    padding:6px;
+  } 
+  select {
+  font-size: 24px;
+  font-family:script;
+  background-color: #e2e2e4;
+  text-align-last:center;
+  display: block;
+ margin: 0 auto; 
+  /* font-weight: bolder; */
+  }
+  input[type=checkbox]  {
+  color: #ccc;
+  font-style: italic;
+  font-size: 110%;
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  transform: scale(2);
+  padding: 50px;
+  margin:5px;
+} 
+input[type=checkbox]:checked + label {
+  color: #400;
+  font-style: normal;
+  font-size: 24px;
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  transform: scale(2);
+  padding: 20px;
+} 
+.checkboxtext
+{
+  /* Checkbox text */
+  font-size: 24px;
+  display: inline;
+}
+input[type="text"]
+{
+    font-size:24px;
+    display: block;
+ margin: 0 auto; 
+}
+#rr-element {
+    white-space: nowrap;
+}
+
+#rr-element label {
+   padding-left: 0.4em;
+}
+input[type=submit] {
+    width: 20em;  height: 3em;
+    display: block;
+ margin: 0 auto; 
+}
+  </style>
+
+
+
+
+
+  <div class="col-sm-10 offset-sm-2"> 
+    <body>
+        
+
+
+<h2>Before we suggest the list of available rental spaces available to you, please complete 
+    the survey below to help us give you the our recommendations.<h2>
+
+<form autocomplete="off" action="recomm_eng" method="POST">
+    
+    <h3><label for="place_type">What is the purpose of your retail space/ What kind of business do you have in mind :</label></h3>
+    <div class="col-sm-10 offset-sm-1">         
+      <div class="row mb-3">
+          <h3><label for="place_type">What is the purpose of your retail space/ What kind of business do you have in mind :</label></h3>
+            <select name="place_type" id="place_type">
+                        <option value="RETAIL">RETAIL</option>
+                        <option value="RESTAURANT">RESTAURANT</option>
+                        <option value="FITNESS">FITNESS</option>
+                        <option value="BEAUTY">BEAUTY</option>
+                        <option value="PHARMACY">PHARMACY</option>
+                        <option value="MEDICAL">MEDICAL</option>
+                        <option value="BAR-CAFE">BAR-CAFE</option>                    
+                        </select>
+        </div>
+    </div>
+   
+    <p> What would be the range of the rental space you are looking for:</p>
+    <label for="rental_space_min">Lower end: <br /> </label>    
+        <input name="rental_space_min" type=number  min= "100" placeholder ="100" step="1" value="100" /> in square foot<br /><br />
+
+        
+        <label for="rental_space_max">Upper end: <br /> </label>    
+            <input name="rental_space_max" type=number  max= "100000" placeholder ="100000" step="1" value="100000" /> in square foot<br /><br />
+
+            
+            <p> What would be the five most important features for you? :</p>
+
+
+
+                <div class="col-sm-10 offset-sm-2">
+                    <div class="autocomplete" style="width:00px;">  
+                        <input id="myInput1"  type="text" name="keyfeature1" placeholder="keyfeature1" >
+                    </div>
+                </div>
+                <div class="col-sm-10 offset-sm-2">
+                    <div class="autocomplete" style="width:00px;">  
+                        <input id="myInput2"  type="text" name="keyfeature2" placeholder="keyfeature2" >
+                    </div>
+                </div>
+                <div class="col-sm-10 offset-sm-2">
+                    <div class="autocomplete" style="width:00px;">  
+                        <input id="myInput3"  type="text" name="keyfeature3" placeholder="keyfeature3" >
+                    </div>
+                </div>
+                <div class="col-sm-10 offset-sm-2">
+                    <div class="autocomplete" style="width:00px;">  
+                        <input id="myInput4"  type="text" name="keyfeature4" placeholder="keyfeature4" >
+                    </div>
+                </div>
+                <div class="col-sm-10 offset-sm-2">
+                    <div class="autocomplete" style="width:00px;">  
+                        <input id="myInput5"  type="text" name="keyfeature5" placeholder="keyfeature5" >
+                    </div>
+                </div>
+        <script> 
+        
+        function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function(e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) { return false;}
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+                /*check if the item starts with the same letters as the text field value:*/
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                /*create a DIV element for each matching element:*/
+                b = document.createElement("DIV");
+                /*make the matching letters bold:*/
+                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                b.innerHTML += arr[i].substr(val.length);
+                /*insert a input field that will hold the current array item's value:*/
+                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                /*execute a function when someone clicks on the item value (DIV element):*/
+                b.addEventListener("click", function(e) {
+                    /*insert the value for the autocomplete text field:*/
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    /*close the list of autocompleted values,
+                    (or any other open lists of autocompleted values:*/
+                    closeAllLists();
+                });
+                a.appendChild(b);
+                }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function(e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                /*If the arrow DOWN key is pressed,
+                increase the currentFocus variable:*/
+                currentFocus++;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                /*If the arrow UP key is pressed,
+                decrease the currentFocus variable:*/
+                currentFocus--;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                e.preventDefault();
+                if (currentFocus > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            /*a function to classify an item as "active":*/
+            if (!x) return false;
+            /*start by removing the "active" class on all items:*/
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            /*add class "autocomplete-active":*/
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            /*a function to remove the "active" class from all autocomplete items:*/
+            for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            /*close all autocomplete lists in the document,
+            except the one passed as an argument:*/
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+            if (elmnt != x[i] && elmnt != inp) {
+                x[i].parentNode.removeChild(x[i]);
+            }
+            }
+        }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+        }
+
+        /*An array containing all the country names in the world:*/
+        var space_features = ['Prime Frontage',
+ 'Excellent Visibility',
+ 'High Foot Traffic',
+ 'High Ceilings',
+ '1st Floor Space',
+ 'Near Public Transit',
+ 'Fast Growing Area',
+ 'Corner Location',
+ 'Turnkey Condition',
+ 'Delivered As Is',
+ 'Flexible Lease Terms',
+ 'Recently Renovated',
+ 'Air Conditioned',
+ 'Ideal for Medical',
+ 'Waterfront Location',
+ 'Ideal for Restaurant',
+ 'Prominent Signage',
+ '2nd Floor Space',
+ 'Newly Constructed',
+ 'Outdoor Seating',
+ 'demo',
+ 'test',
+ 'here',
+ 'By the water',
+ 'Warm Vanilla Shell',
+ 'Near water',
+ 'close to train',
+ 'Ideal for Child Care',
+ 'High Walk Score',
+ 'Ideal for Gallery',
+ 'Ideal for Salon',
+ 'White Box Condition',
+ 'Fully Divisible',
+ 'High Traffic Area',
+ 'Includes Outdoor Space',
+ 'Water Views',
+ 'Good Parking',
+ 'Ideal for Convenience Store',
+ 'High Vehicle Traffic',
+ 'Fully Furnished',
+ 'Newly Renovated',
+ 'Vanilla Shell',
+ 'High Income Area',
+ 'Cold Dark Shell',
+ 'Lorem ipsum dolor sit amet',
+ ' consectetur adipiscing elit. Praesent egestas finibus pulvinar. Vivamus ',
+ 'Big Pylon Sign',
+ 'Drive Thru Allowed',
+ 'Freestanding Building',
+ 'Flexible Zoning',
+ 'Ideal for Retail',
+ 'Turnkey Space',
+ 'All Uses Considered',
+ 'Divisible',
+ 'Ideal for Retail or Office',
+ 'Ideal for Retail With Skylight',
+ 'Ideal Gallery Space',
+ 'Short-Term and Pop-Ups',
+ 'Prime Tribeca Location',
+ 'Bi-Level Retail Space',
+ 'Adjacent To Google’s HQ',
+ 'Private Entry Studio & Office Space',
+ 'Historic Waterfront Building',
+ 'Large Display Windows',
+ 'Double-Height All-Glass Storefront',
+ 'Flagpole Signage',
+ 'New Construction',
+ 'Ideal for Restaurant or Retail',
+ 'Prominent Frontage',
+ 'Corner Frontage',
+ 'Elegant Corner Building',
+ 'Unique Diamond Plate Storefront',
+ 'Modern Free Standing Building',
+ 'Floor-to-Ceiling Corner Frontage',
+ 'Rooftop Space',
+ 'Prominent Corner Flagship',
+ 'Pop-ups Welcome',
+ 'Move-in Condition',
+ 'French Doors Open to Street',
+ 'Large Signage Flag',
+ 'ADA Accessible',
+ 'Logical Divisions Considered',
+ 'Garden Seating Possible',
+ 'Private Terrace',
+ 'Easy Highway Access',
+ 'Flexible Development Options',
+ 'Cold Shell',
+ 'Brand New Space',
+ 'Community Use Space',
+ 'Outdoor Space',
+ 'Ideal for FLAGSHIP Food & Beverage',
+ 'Patio Space',
+ 'Excellent Condition',
+ 'Spacious Private Office',
+ 'Floor-to-Ceiling Retractable Windows',
+ 'New Development',
+ 'Private Backyard',
+ 'Brand New Development',
+ 'Ideal for a Bar/Nightclub',
+ 'Outdoor BBQ Area',
+ 'Ground Floor Retail',
+ 'Ideal for a Daycare Center',
+ 'Backyard / Outdoor Space',
+ 'Outdoor Spaces',
+ 'No Key Money',
+ 'Fully Vented',
+ 'New HVAC',
+ 'High Traffic Location',
+ 'Equipment in Place',
+ 'Turnkey Restaurant',
+ 'Full Liquor License',
+ '75 Person Occupancy',
+ 'Floor-to-Ceiling Windows',
+ 'Exposed Brick & Wood Ceilings',
+ 'Modern Sunny Building',
+ 'New Glass Facade',
+ 'Outdoor Space Available',
+ 'Spectacular Views',
+ 'Rooftop Deck',
+ 'Manhattan Skyline Views',
+ 'All New Glass Frontage',
+ 'Mixed-Use Development',
+ 'Multi-Level with Elevator',
+ 'Large New Development',
+ 'New Construction Retail Space',
+ 'Big Box Space',
+ 'Full Basements',
+ '400 SF Backyard',
+ 'Prime Location',
+ 'All Glass Storefront',
+ 'ADA Compliant',
+ 'Private Outdoor Space',
+ 'Additional Basement Space',
+ 'Near Major Intersection',
+ 'Built-to-suit Opportunity',
+ 'On-site Parking',
+ 'Ideal for Fitness',
+ 'Dense Neighborhood',
+ 'Near NYU Hospital',
+ 'Great Visibility',
+ 'Strong Retail Location',
+ 'Ample Parking',
+ 'Open Floor Plan',
+ 'New Carpets & Paint',
+ 'Immaculate Condition',
+ 'Great Exposure',
+ 'Premier Location',
+ 'Strong Foot Traffic',
+ 'Exceptional Visibility',
+ 'Great Frontage',
+ 'Strong Demographics',
+ 'Divisible Space',
+ 'Mix-Use Development',
+ 'Multiple Access Points',
+ 'Turn-Key Nail Salon',
+ 'Pad Site with Drive-Thru',
+ 'Anchor & Junior Anchor',
+ 'High Traffic Center',
+ 'Excellent Neighbors',
+ 'Easy Access to I-84',
+ 'Good Signage',
+ 'Open & Bright Space',
+ 'Ample Windows',
+ 'Great Lighting',
+ 'Existing Drive-Thru',
+ 'End Unit',
+ 'Ideal for Retail or Medical',
+ 'Highly Visible Pylon',
+ 'Pylon Signage',
+ 'Centrally Location',
+ 'Private Bathroom',
+ 'Highly Visible',
+ 'Highly Visible Signage',
+ 'Pylon Sign Available',
+ 'Pad Site Available',
+ 'Oversized Pylon',
+ 'End Cap Space',
+ 'Central Location',
+ 'Vibrant Retail Hub',
+ 'Available Pad Sites',
+ 'Mezzanine Space',
+ 'Good Visibility',
+ 'Brand New Construction',
+ 'Good Frontage',
+ 'Mezzanine and Basement',
+ 'Ideal for a Restaurant',
+ 'Drive-Thru Permitted',
+ 'High Profile Corner',
+ 'Tremendous Visibility',
+ 'Highly Trafficked Corridor',
+ 'Drive-Thru Lane',
+ 'Established Bank Branch',
+ 'Tremendous Frontage',
+ 'On-Site Parking',
+ 'Selling Lower Level',
+ 'Excellent Location',
+ 'Divisions Considered',
+ '48',
+ '000 VPD',
+ 'Easy Access',
+ 'Rare Lease Availability',
+ '5',
+ '400 SF Street Level',
+ 'Quaint Location',
+ 'Drive-Thru Potential',
+ 'Strong Visibility',
+ 'Sprinklered',
+ 'Premier Office Building',
+ 'Center of Ridgefield',
+ 'Vented QSR Space',
+ 'Steps from GCT',
+ 'Heart of Midtown East',
+ 'Outdoor Seating Area',
+ 'Near Grand Central',
+ 'All-Glass Façade',
+ '1st Floor Plus Mezzanine',
+ 'Great Location',
+ 'Near Bryant Park',
+ 'Glass Storefront',
+ 'Multi-Level Space',
+ 'Full City Block',
+ 'Inline Space'];
+        /*initiate the autocomplete function on the "myInput" element, and pass along the space_features array as possible autocomplete values:*/
+        document.getElementById("myInput1").setAttribute('size', '20');
+        autocomplete(document.getElementById("myInput1"), space_features);
+        
+        document.getElementById("myInput2").setAttribute('size', '20');
+        autocomplete(document.getElementById("myInput2"), space_features);
+
+        document.getElementById("myInput3").setAttribute('size', '20');
+        autocomplete(document.getElementById("myInput3"), space_features);
+
+        document.getElementById("myInput4").setAttribute('size', '20');
+        autocomplete(document.getElementById("myInput4"), space_features);
+
+        document.getElementById("myInput5").setAttribute('size', '20');
+        autocomplete(document.getElementById("myInput5"), space_features);
+        </script>
+
+
+<!-- <p> What would be the three most important keywords for you? This is to compare them against other companies in your group:</p>
+<div class="col-sm-10 offset-sm-1">         
+  <div class="row mb-3">
+        <select name="keyword1" id="keyword1">
+                    <option value="balanc">work-life balance</option>
+                    <option value="free coff">free coffee</option>
+                    <option value="gym">gym</option>
+                    <option value="yoga">yoga</option>
+                    <option value="discount">discounts</option>
+                    <option value="free lunch">free lunch</option>
+                    <option value="divers">diversity</option>
+                    <option value='food'>food</option>
+                    <option value='perk'>perks</option>
+                    <option value='rais'>raise</option>
+                    <option value='vacat'>vacation</option>
+                    <option value='health'>health insurance</option>
+                    <option value='ice cream'>ice cream</option>
+                    <option value='sign bonus'>sign-up bonus</option>
+                    <option value='stock option'>stock option</option>
+                    <option value='incent'>incentives</option>
+                    <option value='student loan pay'>student loan pay off</option>
+                    <option value='surf'>surf</option>
+                    <option value='stress'>stress</option>
+                    <option value='work home'>work from home</option>
+                    <option value='work environ'>working environment</option>
+                    <option value='pay'>pay</option>
+                    </select>
+                    <select name="keyword2" id="keyword2">
+                    <option value="balanc">work-life balance</option>
+                    <option value="free coff">free coffee</option>
+                    <option value="gym">gym</option>
+                    <option value="yoga">yoga</option>
+                    <option value="discount">discounts</option>
+                    <option value="free lunch">free lunch</option>
+                    <option value="divers">diversity</option>
+                    <option value='food'>food</option>
+                    <option value='perk'>perks</option>
+                    <option value='rais'>raise</option>
+                    <option value='vacat'>vacation</option>
+                    <option value='health'>health insurance</option>
+                    <option value='ice cream'>ice cream</option>
+                    <option value='sign bonus'>sign-up bonus</option>
+                    <option value='stock option'>stock option</option>
+                    <option value='incent'>incentives</option>
+                    <option value='student loan pay'>student loan pay off</option>
+                    <option value='surf'>surf</option>
+                    <option value='stress'>stress</option>
+                    <option value='work home'>work from home</option>
+                    <option value='work environ'>working environment</option>
+                    <option value='pay'>pay</option>
+                </select>
+                <select name="keyword3" id="keyword3">
+                    <option value="balanc">work-life balance</option>
+                    <option value="free coff">free coffee</option>
+                    <option value="gym">gym</option>
+                    <option value="yoga">yoga</option>
+                    <option value="discount">discounts</option>
+                    <option value="free lunch">free lunch</option>
+                    <option value="divers">diversity</option>
+                    <option value='food'>food</option>
+                    <option value='perk'>perks</option>
+                    <option value='rais'>raise</option>
+                    <option value='vacat'>vacation</option>
+                    <option value='health'>health insurance</option>
+                    <option value='ice cream'>ice cream</option>
+                    <option value='sign bonus'>sign-up bonus</option>
+                    <option value='stock option'>stock option</option>
+                    <option value='incent'>incentives</option>
+                    <option value='student loan pay'>student loan pay off</option>
+                    <option value='surf'>surf</option>
+                    <option value='stress'>stress</option>
+                    <option value='work home'>work from home</option>
+                    <option value='work environ'>working environment</option>
+                    <option value='pay'>pay</option>
+                </select>
+    </div>
+</div> -->
+        
+        
+        <!-- <p> Pick the keywords you would like for this company, these will be used in grouping your company with others that share similar tendencies for those keywords picked: </p>
+        <div class="row mb-3">
+          <div class="col-sm-10 offset-sm-2">
+            <div class="form-check">
+              <dd id="rr-element">
+                <span class="checkboxtext">
+            <input type='checkbox'   name='features' value='balanc'} /> work life balance <br />
+            <input type='checkbox' name='features' value='yoga'} />     yoga <br />
+            <input type='checkbox' name='features' value='discount'} />    discounts <br />
+            <input type='checkbox' name='features' value='free coff'} />    free coffee<br /> 
+            <input type='checkbox' name='features' value='free lunch'} />    free lunch<br /> 
+            <input type='checkbox' name='features' value='divers'} />    diversity<br />
+            <input type='checkbox' name='features' value='food'} />    food<br />
+            <input type='checkbox' name='features' value='gym'} />    gym<br /> 
+            <input type='checkbox' name='features' value='perk'} />    perks<br />
+            <input type='checkbox' name='features' value='rais'} />    raise<br />
+             <input type='checkbox' name='features' value='vacat'} />    vacation<br /> 
+             <input type='checkbox' name='features' value='health'} />    health<br />
+             <input type='checkbox' name='features' value='ice cream'} />    ice cream<br />
+             <input type='checkbox' name='features' value='sign bonus'} />    sign-up bonus<br />
+             <input type='checkbox' name='features' value='stock option'} />    stock option<br />
+             <input type='checkbox' name='features' value='student loan pay'} />    student loan payoff<br />
+             <input type='checkbox' name='features' value='surf'} />    surf<br />
+            <input type='checkbox' name='features' value='incent'} />    incentive<br /> 
+            <input type='checkbox' name='features' value='stress'} />    stress<br />
+            <input type='checkbox' name='features' value='work home'} />    work from home<br />
+            <input type='checkbox' name='features' value='work environ'} />    working environment<br /> 
+          <input type='checkbox' name='features' value='pay'} />    pay<br />
+        </span>
+            </dd>
+          </div>
+          </div>
+          </div> -->
+        
+        <p>Thank you for your response ! You will now be directed to the retail spaces in New York that match your preferences</p>
+        <div class="col-sm-10 offset-sm-3"> 
+            <input type="submit" >
+        </div>
+
+          </form>
+          </body>
+          </div>
+ </html>
