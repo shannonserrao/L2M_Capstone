@@ -53,7 +53,7 @@ tax_assessor_list=['assessed_value_total', 'assessed_value_land', 'last_sale_amo
 
 poi_list=['RETAIL', 'RESTAURANT', 'FITNESS', 'BEAUTY', 'BANK', 'PHARMACY', 'MEDICAL', 'BAR-CAFE']
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 
 @app.route('/')

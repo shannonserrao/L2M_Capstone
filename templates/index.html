@@ -27,36 +27,94 @@
       padding: 8px;
       background-color: #dddddd;
     }
+
+    h1 {
+    text-align:center;
+    }
     </style>
     
 
 </head>
-<body>
+<body style="margin:20px;padding:0px">
+
 <H1> Lease To Me app</H1>
-<h2> Lease to Me is a web portal that provides business owners retail solutions.
-    Finding the right location and conditions for your new business is a daunting task. Finding 
-    retail spaces is much more challenging that renting a home. </h2>
-<h3> Lets say, you want to open a business in New York. This app allows you to look up things like retail prices,
-    demographics of the neighborhood and other businesses in your area that would make your business profitable. </h3>
+<h2> <p>Lease to Me is a web portal that provides business owners retail solutions. This webapp is a scaled down proof-of-concept version of the Lease-to-Me website built by the author
+    to showcase the recommendation service at Lease-to-Me.</p>  
+    Finding the right location and conditions for your new business is a daunting task. Several factors like foot traffic and local real estate prices 
+    need to be considered while choosing your business location. Market research on these factors are often not easily available and this data can often change with time. 
+In addition, often the best business deals and other minor real estate data are often only known to low level grassroots' brokers. Lease-to-Me is a web portal and a online brokerage service
+ that connects landlords of commercial real-estate to prospective tenants.</h2>
+    <img src="static/logo.png" alt="Lease to Me" style="float:left;width:512px;height:128px;">
+<h3 style="margin:20px;padding:0px"> Lets say, you want to open a business in New York. You would like to look for the best locations for your business.
+    In doing so, you would have to make a complicated decision involving multiple decisions. Just some of these factors include 
+    the type of business, foot traffic associated, local demographics, competing businesses, tax rates etc. Its hard for a individual business owner to pool this data.
+    This app(Lease-to-Me) allows you to look up things like real estate prices, demographics of the neighborhood and other competing in your area that would make your business profitable. 
+    Through Lease-to-Me, you can fill in your requirements, browse the available property lisitngs as well as make contact with local brokers of the properties. This app provides an addition
+    service of recommendations, which would help in writing leasing proposals in addition to making estimates on the viability of your future business.</h3>
 
-<h3>Click to see the demographics information</h3>    
-<form action="demographics" method="GET">
-    <input type="Submit" title="Click Here" value="Demographics">
-</form>
-<form action="property_info" method="GET">
-    <input type="Submit" title="Click Here" value="Property_info">
-</form>
-<form action="places_of_interest" method="GET">
-    <input type="Submit" title="Click Here" value="places_of_interest">
-</form>
-<form action="user_form" method="GET">
-    <input type="Submit" title="Click Here" value="user_form">
-</form>
+    <h4 style="margin:30px;padding:30px"> Visualization: This app allows you to visualize three of the factors that determine the best location for your business:
+        <ol>
+            <li>Demographics information for each zipcode: Factors such as median income and population density displayed per zipcode. 
+                Demographics and community information provides information into the ability of the local community to support your business. 
+                It potentially affects the scale of your establishment.
+                Please click here to see the demographics visualization for your business : 
+                <form action="demographics" method="GET">
+                    <input type="Submit" title="Click Here" value="Demographics">
+                </form>
+            
+            </li>
+        
+        
+        <li>
+            Real-estate information: Real estate information such as the value of the land and the last sale price are aggregated via its mean value and tiled into hexagons
+             on the geographical regions.
+             <form action="property_info" method="GET" >
+                <input type="Submit" title="Click Here" value="Property_info">
+            </form>
 
+        </li>
+        <li>
+            Places of interest : Depending on the type of business you looking for, the symbiotic businesses and competing business are displayed in the vicinity of your location. 
+            <form action="places_of_interest" method="GET">
+                <input type="Submit" title="Click Here" value="places_of_interest">
+            </form>
+                
+        </li>
+
+        </ol> 
+    </h4> 
+    <br>
+    <br>
+    <h4 style="margin:35px;padding:60px"> Data Engineering: <ol>
+    <li> Property data : This is the property listings available through Lease-to-Me.  </li> <br>
+    <li> Third party data : Tax assessment or real-estate data, places_of_interest data and demographics information was obtained from Cherre API.
+        <!-- <p><a href="https://cherre.com/">Cherre API</a></p>  -->
+        <!-- <a href="https://cherre.com/" style="width:10px;height:10px;"></a> -->
+        This data was pulled using graph QL. </li> 
+
+    <li> Tenant Requirement data : This data was also available through Lease-to-Me.</li>
+  </ol>  </h4> 
+
+  <h4 style="margin:20px;padding:20px"> Recommendation service: A scaled down version of the app at Lease-to-Me is provided here to showcase the recommendation serivce.
+       This allows users to fill in a survey some basic questions on the potential business/store and delivers a list of recommendations via a Suitability Score.
+       This builds a feature space of the all the relevant attributes (categorical for property features and numeric for places of interest distances) pertaining to a specific
+       property listing and sends out the best listing using the Gower's distance to mediate between the various distance for the attributes.       
+        To try out the recommendation service click on the user form below:
+
+    <form action="user_form" method="GET">
+        <input type="Submit" title="Click Here" value="user_form">
+    </form>
+    
+  </h4>
+<!-- <h3 style="margin:20px;padding:0px">Click to see the demographics information</h3>     -->
+<!-- <div style="margin:150px;padding:100px" > -->
+
+<h4> If you have any questions, comments or suggestions regarding this app or would like to netowrk, please click below:
 <form action="about" method="GET">
     <input type="Submit" title="Click Here" value="about">
 </form>
-
+</h4>
+<!-- </div> -->
 
 </body>
 </html>
